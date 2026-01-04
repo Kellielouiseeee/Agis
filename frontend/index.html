@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Agismint — Canon Complete</title>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<style>
+  body{margin:0;font-family:Arial;background:#0b0d12;color:#eef2f8}
+  header{padding:16px;background:#131722;color:#eef2f8}
+  nav{display:flex;flex-wrap:wrap;gap:8px;padding:12px;background:#1a1f2c}
+  nav button{background:#26314b;color:#eef2f8;border:none;padding:10px;border-radius:8px;cursor:pointer}
+  nav button.active{background:#22e1b8;color:#041e17}
+  .container{padding:20px}
+  .card{background:#131722;padding:14px;border-radius:12px;margin-bottom:12px}
+  .row{display:flex;gap:8px;flex-wrap:wrap}
+  input,select,textarea{background:#1a1f2c;color:#eef2f8;border:1px solid #3b4663;border-radius:8px;padding:8px}
+  .btn{background:#22e1b8;color:#041e17;border:none;border-radius:8px;padding:8px 12px;cursor:pointer}
+  .btn2{background:#26314b;color:#eef2f8;border:1px solid #3b4663;border-radius:8px;padding:8px 12px;cursor:pointer}
+  .mini{font-size:12px;opacity:.8;margin-top:6px}
+</style>
+</head>
+<body>
+<header>
+  <h1>♾️💎 Agismint</h1>
+  <div class="mini">Founder: <span id="founderBalance">0.00</span> | Profit: <span id="platformProfit">0.00</span> | Carbon: <span id="carbonScore">0</span> | Integrity: <span id="integrityFlag">OK</span></div>
+  <button class="btn2" id="btnVerifyHuman">Verify Human</button> <span id="verifyStatus">Unverified</span>
+</header>
+
+<nav id="nav">
+  <button data-tab="home" class="active">Home</button>
+  <button data-tab="wallets">Wallets</button>
+  <button data-tab="earn">Earn</button>
+  <button data-tab="market">Marketplace</button>
+  <button data-tab="vault">Vault</button>
+  <button data-tab="certs">Certificates</button>
+  <button data-tab="gov">Governance</button>
+  <button data-tab="ins">Insurance</button>
+  <button data-tab="security">Security</button>
+  <button data-tab="support">Support</button>
+  <button data-tab="settings">Settings</button>
+</nav>
+
+<div class="container">
+  <section id="tab-home" class="card">Welcome to Agismint — verify, connect, earn, and manage everything here.</section>
+  <section id="tab-wallets" class="card" style="display:none">
+    <h3>Wallets</h3>
+    <input id="username" placeholder="Username"/>
+    <button class="btn" id="btnCreate">Create Account</button>
+    <div id="walletsList" class="mini">No account yet.</div>
+  </section>
+  <section id="tab-earn" class="card" style="display:none">
+    <h3>Earn Missions</h3>
+    <button class="btn2" id="btnLearn">Learn</button>
+    <button class="btn2" id="btnTasks">Tasks</button>
+    <button class="btn2" id="btnPlayMission">Play</button>
+    <div id="missionsMsg" class="mini"></div>
+  </section>
+  <section id="tab-market" class="card" style="display:none">
+    <h3>Marketplace</h3>
+    <input id="listTitle" placeholder="Title"/>
+    <input id="listPrice" type="number" step="0.01" placeholder="Price"/>
+    <button class="btn" id="btnList">List Item</button>
+    <div id="marketMsg" class="mini"></div>
+  </section>
+  <section id="tab-vault" class="card" style="display:none">
+    <h3>Vault</h3>
+    <button class="btn2" id="btnApplyInterestVault">Apply Interest</button>
+    <button class="btn2" id="btnUnlockVault">Unlock</button>
+    <div id="vaultMsg" class="mini"></div>
+  </section>
+  <section id="tab-certs" class="card" style="display:none">
+    <h3>Certificates</h3>
+    <button class="btn" id="btnBuildVC">Build Credential</button>
+    <div id="vcMsg" class="mini"></div>
+  </section>
+  <section id="tab-gov" class="card" style="display:none">
+    <h3>Governance</h3>
+    <button class="btn2" id="btnPropose">Propose</button>
+    <button class="btn2" id="btnVoteYes">Vote Yes</button>
+    <button class="btn2" id="btnVoteNo">Vote No</button>
+    <div id="daoMsg" class="mini"></div>
+  </section>
+  <section id="tab-ins" class="card" style="display:none">
+    <h3>Insurance</h3>
+    <button class="btn2" id="btnClaimSubmit">Submit Claim</button>
+    <div id="claimMsg" class="mini"></div>
+  </section>
+  <section id="tab-security" class="card" style="display:none">
+    <h3>Security</h3>
+    <button class="btn2" id="btnRiskScan">Run Scan</button>
+    <div id="riskMsg" class="mini"></div>
+  </section>
+  <section id="tab-support" class="card" style="display:none">
+    <h3>Support</h3>
+    <textarea id="supportText" placeholder="Describe issue"></textarea>
+    <button class="btn2" id="btnSupport">Submit</button>
+    <div id="supportMsg" class="mini"></div>
+  </section>
+  <section id="tab-settings" class="card" style="display:none">
+    <h3>Settings</h3>
+    <button class="btn2" id="btnExport">Export Profile</button>
+    <button class="btn2" id="btnAudit">Run Audit</button>
+    <div id="auditMsg" class="mini"></div>
+  </section>
+</div>
+
+<footer>© Agismint — Infinite Trust. Infinite Growth.</footer>
+
+<script>
+const S = JSON.parse(localStorage.getItem("agis_state")||"{}");
+if(!S.users) S.users=[];
+function save(){ localStorage.setItem("agis_state", JSON.stringify(S)); }
+function nowStr(){ return new Date().toLocaleString(); }
+function user(){ return S.users[0]||null; }
+
+document.querySelectorAll('#nav button').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    document.querySelectorAll('#nav button').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    const tab=btn.dataset.tab;
+    document.querySelectorAll('.container section').forEach(s=>s.style.display='none');
+    document.getElementById('tab-'+tab).style.display='block';
+  });
+});
+
+document.getElementById('btnVerifyHuman').addEventListener('click', ()=>{ document.getElementById('verifyStatus').textContent="Verified"; });
+
+document.getElementById('btnCreate').addEventListener('click', ()=>{
+  const name=document.getElementById('username').value.trim();
+  if(!name) return;
+  S.users.push({name,balances:{AGIS:0},vault:{locked:0,dailyInterest:0.01}});
+  save();
+  document.getElementById('walletsList').textContent="Account created: "+name;
+});
+
+document.getElementById('btnLearn').addEventListener('click', ()=>{ const u=user(); if(!u) return; u.balances.AGIS+=0.2; save(); document.getElementById('missionsMsg').textContent="Learn mission complete +0.2 AGIS"; });
+document.getElementById('btnTasks').addEventListener('click', ()=>{ const u=user(); if(!u) return; u.balances.AGIS+=0.25; save(); document.getElementById('missionsMsg').textContent="Task mission complete +0.25 AGIS"; });
+document.getElementById('btnPlayMission').addEventListener('click', ()=>{ const u=user(); if(!u) return; u.balances.AGIS

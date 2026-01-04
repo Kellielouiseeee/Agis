@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>AGIS Mini Game</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <h1>AGIS Mini Game</h1>
+  <p>Use arrow keys to move the player. Collect circles to score points.</p>
+  <div id="hud">Score: <span id="score">0</span></div>
+  <canvas id="game" width="640" height="360"></canvas>
+  <div class="controls">
+    <button id="start">Start</button>
+    <button id="pause">Pause</button>
+    <button id="reset">Reset</button>
+  </div>
+  <script src="game.js"></script>
+</body>
+</html>
