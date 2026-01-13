@@ -50,20 +50,6 @@ function update(dt){
       scoreEl.textContent = state.score;
       // spawn a new one
       setTimeout(spawnTarget, 250);
-      // send result to backend (best-effort)
-      try {
-        fetch('/api/game/result', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ userId: 'guest', score: state.score })
-        }).then(r=>r.json()).then(data=>{
-          // show reward briefly in HUD
-          if(data && data.reward){
-            scoreEl.textContent = state.score + ' (+' + data.reward.amount + ')';
-            setTimeout(()=> scoreEl.textContent = state.score, 1500);
-          }
-        }).catch(()=>{});
-      } catch(e) {}
       return false; // remove
     }
     return true;
